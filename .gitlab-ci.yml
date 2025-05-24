@@ -2,26 +2,24 @@ variables:
     GIT_SUBMODULE_STRATEGY: recursive
 
 before_script:
-  - export PATH=/usr/lib/ccache:$PATH
-  - touch .gitlab-runner
   - git config --global user.email "$GITLAB_USER_EMAIL"
   - git config --global user.name "$GITLAB_USER_NAME"
   - git config --global advice.detachedHead false
 
 build-debian-12:
-  image: robertcnelson/debian-bullseye-slim-yocto:latest
+  image: robertcnelson/beagle-devscripts-yocto-debian-12-amd64:latest
+  # https://openbeagle.org/beagleboard/ci-docker-images
   cache:
     key: "$CI_PROJECT_NAME-debian-12"
     paths:
-      - thead-build/sstate-cache/*
+      - build/sstate-cache/*
   tags:
     - docker-amd64
   stage: build
   script:
-#    - source openembedded-core/oe-init-build-env thead-build/light-fm
-    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/beaglev-ahead/Linux_SDK_V1.1.2/downloads/ ../downloads/ || true
-#    - rm -rfv ../downloads/git2/git.beagleboard.org.beaglev-ahead.beaglev* || true
-#    - rm -rfv ../downloads/git2_git.beagleboard.org.beaglev-ahead.beaglev* || true
+    - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/
+#    - source openembedded-core/oe-init-build-env build/light-fm
+    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ ../downloads/ || true
     - du -sh ../downloads/
 #    - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
 #    - BB_NUMBER_THREADS=4 MACHINE=light-beagle bitbake thead-image-linux --runall=fetch || true
