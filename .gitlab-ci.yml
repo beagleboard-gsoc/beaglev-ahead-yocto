@@ -23,7 +23,7 @@ build-debian-12:
   script:
     - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/
 #    - source openembedded-core/oe-init-build-env build/light-fm
-    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ ../downloads/ || true
+    - mkdir -p ../downloads ; rsync -a --delete /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ ../downloads/ || true
     - du -sh ../downloads/
 #    - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
 #    - BB_NUMBER_THREADS=4 MACHINE=light-beagle bitbake thead-image-linux --runall=fetch || true
