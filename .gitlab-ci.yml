@@ -1,0 +1,46 @@
+variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+
+before_script:
+  - export PATH=/usr/lib/ccache:$PATH
+  - touch .gitlab-runner
+  - git config --global user.email "$GITLAB_USER_EMAIL"
+  - git config --global user.name "$GITLAB_USER_NAME"
+  - git config --global advice.detachedHead false
+
+build-debian-12:
+  image: robertcnelson/debian-bullseye-slim-yocto:latest
+  cache:
+    key: "$CI_PROJECT_NAME-debian-12"
+    paths:
+      - thead-build/sstate-cache/*
+  tags:
+    - docker-amd64
+  stage: build
+  script:
+#    - source openembedded-core/oe-init-build-env thead-build/light-fm
+    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/beaglev-ahead/Linux_SDK_V1.1.2/downloads/ ../downloads/ || true
+#    - rm -rfv ../downloads/git2/git.beagleboard.org.beaglev-ahead.beaglev* || true
+#    - rm -rfv ../downloads/git2_git.beagleboard.org.beaglev-ahead.beaglev* || true
+    - du -sh ../downloads/
+#    - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
+#    - BB_NUMBER_THREADS=4 MACHINE=light-beagle bitbake thead-image-linux --runall=fetch || true
+#    - BB_NUMBER_THREADS=4 MACHINE=light-beagle bitbake -k thead-image-linux || true
+#    - cp -v ./tmp-glibc/deploy/images/light-beagle/u-boot-with-spl.bin ../../deploy/ || true
+#    - cp -v ./tmp-glibc/deploy/images/light-beagle/boot.ext4 ../../deploy/ || true
+#    - cp -v ./tmp-glibc/deploy/images/light-beagle/thead-image-linux-light-beagle-*.rootfs.ext4 ../../deploy/root.ext4 || true
+#    - cd /builds/beaglev-ahead/xuantie-yocto/
+#    - xz -vT8 deploy/boot.ext4 || true
+#    - xz -vT8 deploy/root.ext4 || true
+  artifacts:
+    when: on_success
+    expire_in: 2 weeks
+    name: "$CI_PROJECT_NAME-debian-12-$CI_JOB_ID"
+#    paths:
+#      - "deploy/fastboot_emmc.sh"
+#      - "deploy/mac_fastboot_emmc.sh"
+#      - "deploy/u-boot-with-spl.bin"
+#      - "deploy/boot.ext4.xz"
+#      - "deploy/root.ext4.xz"
+
+
