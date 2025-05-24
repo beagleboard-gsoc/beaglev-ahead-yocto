@@ -2,10 +2,11 @@ variables:
     GIT_SUBMODULE_STRATEGY: recursive
 
 before_script:
-  - echo "Acquire::http::Proxy \"http://192.168.1.10:3142\";" > /etc/apt/apt.conf.d/00aptproxy
-  - apt-get update
-  - apt-get dist-upgrade -yq
-#  - apt-get install -y <>
+  - echo "Acquire::http::Proxy \"http://192.168.1.10:3142\";" > /tmp/file
+  - sudo mv /tmp/file /etc/apt/apt.conf.d/00aptproxy
+  - sudo apt-get update
+  - sudo apt-get dist-upgrade -yq
+#  - sudo apt-get install -y <>
   - git config --global user.email "$GITLAB_USER_EMAIL"
   - git config --global user.name "$GITLAB_USER_NAME"
   - git config --global advice.detachedHead false
