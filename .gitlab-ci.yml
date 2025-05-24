@@ -22,7 +22,7 @@ build-debian-12:
     - docker-amd64
   stage: build
   script:
-    - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/
+    - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/
 #    - source openembedded-core/oe-init-build-env build/light-fm
     - mkdir -p ../downloads ; rsync -a --delete /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ ../downloads/ || true
     - du -sh ../downloads/
