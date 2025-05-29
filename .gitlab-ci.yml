@@ -18,7 +18,7 @@ build-debian-12:
   cache:
     key: "$CI_PROJECT_NAME-debian-12"
     paths:
-      - build/sstate-cache/*
+      - sstate-cache/*
   tags:
     - docker-amd64
   stage: build
@@ -27,6 +27,7 @@ build-debian-12:
     - mkdir -p ../downloads
     - rsync -a --usermap=1000:30000 --groupmap=1000:30000 /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ ../downloads/
     - du -sh ../downloads/
+    - du -sh ../sstate-cache/
     # - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
     - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake core-image-minimal --runall=fetch || true
     - rsync -a --usermap=30000:1000 --groupmap=30000:1000 ../downloads/ /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/
