@@ -6,7 +6,7 @@ before_script:
   - sudo mv /tmp/file /etc/apt/apt.conf.d/00aptproxy
   - sudo apt-get update
   - sudo apt-get dist-upgrade -yq
-#  - sudo apt-get install -y <>
+  - sudo apt-get install -y build-essential chrpath cpio debianutils diffstat file gawk gcc git iputils-ping libacl1 liblz4-tool locales python3 python3-git python3-jinja2 python3-pexpect python3-pip python3-subunit socat texinfo unzip wget xz-utils zstd
   - git config --global user.email "$GITLAB_USER_EMAIL"
   - git config --global user.name "$GITLAB_USER_NAME"
   - git config --global advice.detachedHead false
@@ -22,30 +22,30 @@ build-debian-12:
     - docker-amd64
   stage: build
   script:
-#    - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/
-#    - source openembedded-core/oe-init-build-env build/light-fm
-#    - mkdir -p ../downloads ; rsync -a --delete /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ ../downloads/ || true
-    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ ../downloads/ || true
+    - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/
+    - source poky/oe-init-build-env build-beaglev
+    - mkdir -p ../downloads ; rsync -a --delete /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ ../downloads/ || true
+    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ ../downloads/ || true
     - du -sh ../downloads/
-#    - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
-#    - BB_NUMBER_THREADS=4 MACHINE=light-beagle bitbake thead-image-linux --runall=fetch || true
-#    - rsync -a ../downloads/ /mnt/yocto-cache/yocto/BeagleV-Ahead-Scarthgap/downloads/ || true
-#    - BB_NUMBER_THREADS=4 MACHINE=light-beagle bitbake -k thead-image-linux || true
-#    - cp -v ./tmp-glibc/deploy/images/light-beagle/u-boot-with-spl.bin ../../deploy/ || true
-#    - cp -v ./tmp-glibc/deploy/images/light-beagle/boot.ext4 ../../deploy/ || true
-#    - cp -v ./tmp-glibc/deploy/images/light-beagle/thead-image-linux-light-beagle-*.rootfs.ext4 ../../deploy/root.ext4 || true
-#    - cd /builds/beaglev-ahead/xuantie-yocto/
-#    - xz -vT8 deploy/boot.ext4 || true
-#    - xz -vT8 deploy/root.ext4 || true
+    # - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
+    - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake core-image-minimal --runall=fetch || true
+    - rsync -a ../downloads/ /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ || true
+    - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake -k core-image-minimal || true
+    - cp -v ./tmp/deploy/images/beaglev-ahead/u-boot-with-spl.bin ../../deploy/ || true
+    - cp -v ./tmp/deploy/images/beaglev-ahead/boot.ext4 ../../deploy/ || true
+    - cp -v ./tmp/deploy/images/beaglev-ahead/core-image-minimal-beaglev-ahead-*.rootfs.ext4 ../../deploy/root.ext4 || true
+    - cd /builds/beaglev-ahead-yocto/
+    - xz -vT8 deploy/boot.ext4 || true
+    - xz -vT8 deploy/root.ext4 || true
   artifacts:
     when: on_success
     expire_in: 2 weeks
     name: "$CI_PROJECT_NAME-debian-12-$CI_JOB_ID"
-#    paths:
-#      - "deploy/fastboot_emmc.sh"
-#      - "deploy/mac_fastboot_emmc.sh"
-#      - "deploy/u-boot-with-spl.bin"
-#      - "deploy/boot.ext4.xz"
-#      - "deploy/root.ext4.xz"
+    paths:
+     - "deploy/fastboot_emmc.sh"
+     - "deploy/mac_fastboot_emmc.sh"
+     - "deploy/u-boot-with-spl.bin"
+     - "deploy/boot.ext4.xz"
+     - "deploy/root.ext4.xz"
 
 
