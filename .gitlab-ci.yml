@@ -10,6 +10,7 @@ before_script:
   - git config --global user.email "$GITLAB_USER_EMAIL"
   - git config --global user.name "$GITLAB_USER_NAME"
   - git config --global advice.detachedHead false
+  - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/
 
 build-debian-12:
   image: robertcnelson/beagle-devscripts-yocto-debian-12-amd64:latest
@@ -22,14 +23,13 @@ build-debian-12:
     - docker-amd64
   stage: build
   script:
-    - mkdir -p /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/
     - source poky/oe-init-build-env build-beaglev
-    - mkdir -p ../downloads ; rsync -a --delete /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ ../downloads/ || true
-    - mkdir -p ../downloads ; rsync -a /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ ../downloads/ || true
+    - mkdir -p ../downloads
+    - rsync -a --usermap=1000:30000 --groupmap=1000:30000 /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ ../downloads/
     - du -sh ../downloads/
     # - MACHINE=light-beagle bitbake -c cleansstate opensbi u-boot linux-thead || true
     - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake core-image-minimal --runall=fetch || true
-    - rsync -a ../downloads/ /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/ || true
+    - rsync -a --usermap=30000:1000 --groupmap=30000:1000 ../downloads/ /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/
     - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake -k core-image-minimal || true
     - cp -v ./tmp/deploy/images/beaglev-ahead/u-boot-with-spl.bin ../../deploy/ || true
     - cp -v ./tmp/deploy/images/beaglev-ahead/boot.ext4 ../../deploy/ || true
