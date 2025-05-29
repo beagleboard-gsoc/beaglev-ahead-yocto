@@ -1,0 +1,6 @@
+[submodule "meta-riscv"]
+	path = meta-riscv
+	url = https://github.com/riscv/meta-riscv
+[submodule "poky"]
+	path = poky
+	url = git://git.yoctoproject.org/poky
