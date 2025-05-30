@@ -34,7 +34,7 @@ build-debian-12:
     - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake -k core-image-minimal || true
     - tree ./tmp/deploy/images/
     - du -sh ./tmp/deploy/images/
-    - cp -v ./tmp/deploy/images/beaglev-ahead/* ../../deploy/
+    - cp -v ./tmp/deploy/images/beaglev-ahead/* ../deploy/
 #    - xz -vT8 deploy/boot.ext4 || true
 #    - xz -vT8 deploy/root.ext4 || true
   artifacts:
