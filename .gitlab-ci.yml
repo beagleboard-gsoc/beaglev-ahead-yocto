@@ -32,8 +32,10 @@ build-debian-12:
     - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake core-image-minimal --runall=fetch || true
     - rsync -a --usermap=30000:1000 --groupmap=30000:1000 ../downloads/ /mnt/yocto-cache/yocto/BeagleV-Ahead-master/downloads/
     - BB_NUMBER_THREADS=4 MACHINE=beaglev-ahead bitbake -k core-image-minimal || true
-    - pwd
-    - tree -d ./
+    - tree ./tmp/deploy/
+    - du -sh ./tmp/deploy/
+### We can use the next du for true/false build sucess.... (but we need an image first)
+#    - du -sh ./tmp/deploy/images/
     - cp -v ./tmp/deploy/images/beaglev-ahead/u-boot-with-spl.bin ../../deploy/ || true
     - cp -v ./tmp/deploy/images/beaglev-ahead/boot.ext4 ../../deploy/ || true
     - cp -v ./tmp/deploy/images/beaglev-ahead/core-image-minimal-beaglev-ahead-*.rootfs.ext4 ../../deploy/root.ext4 || true
