@@ -40,7 +40,7 @@ build-debian-12:
   artifacts:
     when: on_success
     expire_in: 2 weeks
-    name: "$CI_PROJECT_NAME-debian-12-$CI_JOB_ID"
+    name: "$CI_PROJECT_NAME-$CI_JOB_ID"
     paths:
      - "deploy/*"
 
