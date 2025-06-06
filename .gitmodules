@@ -1,6 +1,6 @@
 [submodule "meta-riscv"]
 	path = meta-riscv
-	url = https://github.com/riscv/meta-riscv
+	url = https://openbeagle.org/klug/meta-riscv.git
 [submodule "poky"]
 	path = poky
-	url = git://git.yoctoproject.org/poky
+	url = https://openbeagle.org/klug/poky.git
