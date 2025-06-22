@@ -1,6 +1,6 @@
 [submodule "meta-riscv"]
 	path = meta-riscv
-	url = https://openbeagle.org/klug/meta-riscv.git
+	url = https://gitlab.com/kanakshilledar/meta-riscv.git
 [submodule "poky"]
 	path = poky
-	url = https://openbeagle.org/klug/poky.git
+	url = https://gitlab.com/kanakshilledar/poky.git
